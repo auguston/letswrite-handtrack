@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+html(lang="zh-TW")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title Hand Track Test - Augustus - Let's Write
+
+    link(rel="canonical", href="https://auguston.github.io/medium-handtrack/")
+    meta(property="og:url", content="https://auguston.github.io/medium-handtrack/")
+
+    meta(property="og:site_name", content="Let's Write")
+    meta(property="og:title", content="Hand Track Test - Augustus - Let's Write")
+    meta(itemprop="name", content="Hand Track Test - Augustus - Let's Write")
+
+    meta(name="description", content="第一次測試handtrack.js，之後想想能拿來做什麼……")
+    meta(property="og:description", content="第一次測試handtrack.js，之後想想能拿來做什麼……")
+    meta(itemprop="description", content="第一次測試handtrack.js，之後想想能拿來做什麼……")
+
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+
+    style.
+      html, body, .container {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #video {
+        display: none;
+      }
+      #canvas {
+        width: 100%;
+        max-width: 100%;
+      }
+  body
+    script(async, src='https://www.googletagmanager.com/gtag/js?id=UA-74398300-1')
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-74398300-1');
+      
+    #app.container-fluid
+      .row.pt-3
+        .video.col-8
+          video#video
+          canvas#canvas
+        .info.col-4
+          .card
+            .card-header 偵測到的「手」資訊
+            ul.list-group.list-group-flush(v-for="box in boxs")
+              li.list-group-item(v-for="(b, i) in box.bbox") {{ tag(i) }} {{ b }}
+              hr
+    
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js")
+    script.
+      const HandTrack = new Vue({
+        el: '#app',
+        data: {
+          boxs: null
+        },
+        methods: {
+          tag(i) {
+            switch(i) {
+              case 0:
+                return 'X：';
+                break;
+              case 1:
+                return 'Y：';
+                break;
+              case 2:
+                return '寬：';
+                break;
+              case 3:
+                return '長：';
+                break;
+            }
+          }
+        },
+        mounted() {
+          const video = document.getElementById('video');
+          const canvas = document.getElementById('canvas');
+          const context = canvas.getContext('2d');
+
+          const _this = this;
+
+          function runDetection() {
+            model.detect(video).then(predictions => {
+              _this.boxs = predictions;
+              model.renderPredictions(predictions, canvas, context, video);
+              requestAnimationFrame(runDetection);
+            });
+          }
+          handTrack
+            .startVideo(video)
+            .then(res => {
+              if(res) runDetection()
+              else console.log('err')
+            });
+          handTrack.load({
+            flipHorizontal: true,
+            maxNumBoxes: 20,
+            iouThreshold: 0.5,
+            scoreThreshold: 0.6,
+          }).then(lmodel => model = lmodel);
+        }
+      })
+
