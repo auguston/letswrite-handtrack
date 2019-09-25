@@ -51,7 +51,7 @@ html(lang="zh-TW")
           .card
             .card-header 偵測到的「手」資訊
             ul.list-group.list-group-flush(v-for="box in boxs")
-              li.list-group-item(v-for="(b, i) in box.bbox") {{ tag(i) }} {{ b }}
+              li.list-group-item(v-for="(b, i) in box.bbox") {{ tag(i) }} {{ Math.floor(b) }}
               hr
     
     script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js")

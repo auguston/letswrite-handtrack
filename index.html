@@ -14,7 +14,7 @@
 }</style></head><body><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-74398300-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'UA-74398300-1'); </script><div class="container-fluid" id="app"><div class="row pt-3"><div class="video col-8"><video id="video"></video><canvas id="canvas"></canvas></div><div class="info col-4"><div class="card"><div class="card-header">偵測到的「手」資訊</div><ul class="list-group list-group-flush" v-for="box in boxs"><li class="list-group-item" v-for="(b, i) in box.bbox">{{ tag(i) }} {{ b }}</li><hr></ul></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script><script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"></script><script>const HandTrack = new Vue({
+gtag('config', 'UA-74398300-1'); </script><div class="container-fluid" id="app"><div class="row pt-3"><div class="video col-8"><video id="video"></video><canvas id="canvas"></canvas></div><div class="info col-4"><div class="card"><div class="card-header">偵測到的「手」資訊</div><ul class="list-group list-group-flush" v-for="box in boxs"><li class="list-group-item" v-for="(b, i) in box.bbox">{{ tag(i) }} {{ Math.floor(b) }}</li><hr></ul></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script><script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"></script><script>const HandTrack = new Vue({
   el: '#app',
   data: {
     boxs: null
